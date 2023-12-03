@@ -1,0 +1,292 @@
+Q1.
+
+i) AC.java
+package Assinment5;
+
+public class AC  {
+	
+	String a;
+	public AC(String string) 
+	{
+		
+		this.a=string;
+	}
+	public void powerOn(){
+		System.out.println(a+" "+"AC is on");
+	}
+	
+	public void powerOff(){
+		System.out.println(a+" "+ "AC is Off");
+	}
+
+}
+
+ii) ACOffCommand.java
+package Assinment5;
+
+public class ACOffCommand implements Command {
+	AC ac;
+	
+	public ACOffCommand(AC ac) {
+		this.ac=ac;
+	}
+	
+	public void execute(){
+		ac.powerOff();
+	}
+}
+
+iii) ACOnCommand.java
+
+package Assinment5;
+
+public class ACOnCommand implements Command {
+	AC ac;
+	
+	public ACOnCommand(AC ac) {
+		this.ac=ac;
+	}
+	
+	public void execute(){
+		ac.powerOn();
+	}
+	
+
+}
+
+iv) Command.java
+package Assinment5;
+
+public interface Command {
+	public void execute();
+
+}
+
+v) Light.java
+package Assinment5;
+
+public class Light {
+	String a;
+	public Light(String string) 
+	{
+		
+		this.a=string;
+	}
+
+	
+	public void on() {
+		System.out.println(a+" "+"Light is on");
+		
+	}
+	public void off() {
+		System.out.println(a+" "+"Light is off");
+	}
+
+}
+
+Vi) LightOffCommand.java
+package Assinment5;
+
+public class LightOffCommand implements Command{
+	Light light;
+
+	public LightOffCommand(Light light){
+		
+		this.light=light;	
+	}
+
+	public void execute(){
+		
+		light.off();
+	}
+
+}
+
+
+
+vii) LightOnCommand.java
+package Assinment5;
+
+public class LightOnCommand implements Command{
+	Light light;
+
+	public LightOnCommand(Light light){
+	
+		this.light=light;	
+		
+	}
+
+	public void execute(){
+		light.on();
+	}
+}
+
+viii) NoCommand.java
+package Assinment5;
+
+public class NoCommand implements Command {
+	public void execute() {
+	}
+}
+
+ix) RemoteControl.java
+package Assinment5;
+
+public class RemoteControl {
+	Command[] onCommands;
+	Command[] offCommands;
+
+	public RemoteControl(){
+	onCommands= new Command[5];
+	offCommands= new Command[5];
+
+	Command noCommand=new NoCommand();
+ //The NoCommand object is an example of null object.
+	for(int i=0;i<5;i++){
+	onCommands[i]=noCommand;
+	offCommands[i]=noCommand;
+	}
+	}
+	public void setCommand(int slot, Command onCommand, Command offCommand){
+	onCommands[slot]=onCommand;
+	offCommands[slot]=offCommand;
+	}
+	
+	public void onButtonWasPushed(int slot){
+	onCommands[slot].execute();	
+	}
+	public void offButtonWasPushed(int slot){
+	offCommands[slot].execute();	
+	}
+	public String toString(){
+	StringBuffer stringBuff= new StringBuffer();
+	stringBuff.append("\n*****Remote Control*****\n");
+	for(int i=0; i<onCommands.length; i++){
+		stringBuff.append("[slot"+i+"]"+onCommands[i].getClass().getName()
+				+"    "+offCommands[i].getClass().getName()+"\n");
+	}
+	return stringBuff.toString();
+	}
+	
+		
+	}
+
+
+x) RemoteLoader.java
+
+package Assinment5;
+
+public class RemoteLoader {
+	public static void main(String[] args){
+		RemoteControl remoteControl=new RemoteControl();
+		Light livingRoomLight= new Light("Living Room");
+		Light kitchenLight= new Light("Kitchen Room");
+		
+		AC livingroomAC=new AC("Living Room");
+		AC bedroomAC=new AC("Bed Room");
+		
+		
+		//Living room lights on and off
+		LightOnCommand livingRoomLightOn=new LightOnCommand(livingRoomLight);
+		LightOffCommand livingRoomLightOff=new LightOffCommand(livingRoomLight);
+
+		//Kitchen room lights on and off
+		LightOnCommand kitchenLightOn=new LightOnCommand(kitchenLight);
+		LightOffCommand kitchenLightOff=new LightOffCommand(kitchenLight);
+		
+		//AC on And OFF
+		ACOnCommand livingroomacOn=new ACOnCommand(livingroomAC);
+		ACOffCommand livingroomacOff=new ACOffCommand(livingroomAC);
+		
+		
+		ACOnCommand bedroomacOn=new ACOnCommand(bedroomAC);
+		ACOffCommand bedroomacOff=new ACOffCommand(bedroomAC);
+		
+		
+		remoteControl.setCommand(0,livingRoomLightOn, livingRoomLightOff);
+	    remoteControl.setCommand(1, kitchenLightOn, kitchenLightOff);
+	    remoteControl.setCommand (2, livingroomacOn , livingroomacOff);
+	    remoteControl.setCommand (3, bedroomacOn , bedroomacOff);
+	
+	    System.out.println(remoteControl);
+	    
+		remoteControl.onButtonWasPushed(0);
+		remoteControl.offButtonWasPushed(0);
+		remoteControl.onButtonWasPushed(1);
+		remoteControl.offButtonWasPushed(1);
+		remoteControl.onButtonWasPushed(2);
+		remoteControl.offButtonWasPushed(2);
+		remoteControl.onButtonWasPushed(3);
+		remoteControl.offButtonWasPushed(3);
+		
+		
+	}
+	
+}
+
+
+
+Q2.
+
+
+# Importing the libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Importing the dataset
+datas = pd.read_csv('SimpleLinearRegression.csv')
+datas
+
+X = datas.iloc[:, :-1].values
+y = datas.iloc[:, 1].values
+
+# Fitting Linear Regression to the dataset
+from sklearn.linear_model import LinearRegression
+lin = LinearRegression()
+
+lin.fit(X, y)
+
+
+# Fitting Polynomial Regression to the dataset
+from sklearn.preprocessing import PolynomialFeatures
+
+poly = PolynomialFeatures(degree=4)
+X_poly = poly.fit_transform(X)
+
+poly.fit(X_poly, y)
+lin2 = LinearRegression()
+lin2.fit(X_poly, y)
+
+# Visualising the Polynomial Regression results
+plt.scatter(X, y, color='blue')
+
+plt.plot(X, lin2.predict(poly.fit_transform(X)),color='red')
+plt.title('Polynomial Regression')
+plt.xlabel('Temperature')
+plt.ylabel('Pressure')
+
+plt.show()
+
+
+
+Q3.
+
+var http = require('http');
+var url = require('url');
+var fs = require('fs');
+
+http.createServer(function (req, res) {
+  var q = url.parse(req.url, true);
+  var filename = "." + q.pathname;
+
+  fs.readFile(filename, function(err, data) {
+    if (err) {
+      res.writeHead(404, {'Content-Type': 'text/html'});
+      return res.end("404 Not Found");
+    } 
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(data);
+    return res.end();
+  });
+}).listen(8080);

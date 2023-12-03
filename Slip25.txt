@@ -1,0 +1,93 @@
+Q1.
+
+
+class Singleton
+{
+	static private Singleton Uniqueobj=null;
+	
+	private Singleton()
+	{
+		System.out.println("Hello i am in Constructor");
+	}
+	
+	public static synchronized Singleton getInstance()
+	{
+		if(Uniqueobj==null)
+		{
+			Uniqueobj= new Singleton();
+		}
+		return Uniqueobj;
+	}
+	
+}
+public class Threading extends Thread{
+
+	public static void main(String[] args) {
+		System.out.println("*****With Thread******");
+		
+		Threading T1,T2,T3;
+		T1=new Threading();
+		T2=new Threading();
+		T3=new Threading();
+		T1.setName("One");
+		T2.setName("Two");
+		T3.setName("Three");
+		T1.start();
+		T2.start();
+		T3.start();
+	}
+	public void run()
+	{
+		for(int i=0;i<3;i++)
+		{
+			Singleton s3=Singleton.getInstance();
+			System.out.println("Hashcode value with thread calling :-  "+getName()+" "+s3.hashCode());
+		}
+	}
+
+}
+
+
+
+
+Q2.
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(0)
+X = 2 * np.random.rand(100, 1)
+y = 4 + 3 * X + np.random.randn(100, 1)
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+from sklearn.metrics import mean_squared_error
+y_pred = model.predict(X_test)
+mse = mean_squared_error(y_test, y_pred)
+print("Mean Squared Error:", mse)
+
+plt.scatter(X_train, y_train, label="Training Data")
+plt.plot(X_test, y_pred, color='red', linewidth=3, label="Regression Line")
+plt.xlabel("X")
+plt.ylabel("y")
+plt.legend()
+plt.title("Linear Regression for House Price Prediction")
+plt.show()
+
+
+
+Q3.
+
+
+var http = require('http');
+var server = http.createServer(function (req, res) {
+    res.write("<h1>Server Created!</h1>");
+});
+server.listen(8080);

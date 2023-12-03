@@ -1,0 +1,107 @@
+Q1.
+
+class Singleton
+{
+	static private Singleton Uniqueobj=null;
+	
+	private Singleton()
+	{
+		System.out.println("Hello i am in Constructor");
+	}
+	
+	public static synchronized Singleton getInstance()
+	{
+		if(Uniqueobj==null)
+		{
+			Uniqueobj= new Singleton();
+		}
+		return Uniqueobj;
+	}
+	
+}
+public class Threading extends Thread{
+
+	public static void main(String[] args) {
+		System.out.println("*****With Thread******");
+		
+		Threading T1,T2,T3;
+		T1=new Threading();
+		T2=new Threading();
+		T3=new Threading();
+		T1.setName("One");
+		T2.setName("Two");
+		T3.setName("Three");
+		T1.start();
+		T2.start();
+		T3.start();
+	}
+	public void run()
+	{
+		for(int i=0;i<3;i++)
+		{
+			Singleton s3=Singleton.getInstance();
+			System.out.println("Hashcode value with thread calling :-  "+getName()+" "+s3.hashCode());
+		}
+	}
+
+}
+
+
+
+
+Q2.
+
+
+import pandas as pd
+import numpy as np
+
+dataset = pd.read_csv("data.csv")
+dataset
+dataset.info()
+dataset.isnull().sum()
+dataset.dropna(inplace=True)
+dataset
+
+
+
+Q3.
+
+
+<html>
+    <head>
+        <script type="text/javascript">
+            function validate(){
+            var regName=/^[a-zA-z]+[a-zA-Z]+$/;
+            var dateformatdob = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
+            var dateformatjdate = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
+            var salaryformat=/^\d{1,6}(?:\.\d{0,2})?$/
+            var name=document.getElementById("name").value;
+            var dob=document.getElementById("dob").value;
+            var jdate=document.getElementById("jdate").value;
+            var salary=document.getElementById("salary").value;
+            
+            if(!regName.test(name))
+                alert("invalid name is given");
+            if(!dateformatjdate.test(jdate))
+                alert("invalid joining date is given");
+            if(!dateformatdob.test(dob))
+                alert("invalid date of birth is given");
+            if(!salaryformat.test(salary))
+                alert("invalid salary");
+        }
+        </script>
+    </head>
+<body>
+    <form>
+        <h1>Employee Rsgistration Details</h1>
+            employee name :
+            <input type="text" name="fname" id="name"><br>
+            date of birth :
+            <input type="text" name="dob" id="dob"><br>
+            joining date :
+            <input type="text" name="jdate" id="jdate"><br>
+            salary :
+            <input type="text" name="salary" id="salary"><br>
+            <input type="button" value="validate" onclick="validate()">
+    </form>
+</body>

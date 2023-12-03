@@ -1,0 +1,142 @@
+Q1.
+
+i)Product.java
+
+package assignment7;
+
+import java.util.Iterator;
+
+public class Product {
+	public void displayProduct(Iterator iterator){
+		 for (; iterator.hasNext();)
+			System.out.println(iterator.next());
+	}
+
+	public static void main(String[] args) {
+	
+		Product product = new Product();
+		EnumProductenumProduct = new EnumProduct();
+		EnumToIteratorAdapterenumToIteratorAdapter = new EnumToIteratorAdapter(enumProduct.getProduct());
+		product.displayProduct(enumToIteratorAdapter);
+	}
+
+}
+
+
+ii) EnumToIteratorAdapter.java
+package assignment7;
+
+import java.util.Iterator;
+import java.util.Enumeration;
+
+public class EnumToIteratorAdapter implements Iterator{
+Enumeration enumA;
+	
+	public EnumToIteratorAdapter(Enumeration e){
+		enumA = e;
+	}
+	
+	public booleanhasNext(){
+		return enumA.hasMoreElements();
+	}
+	
+	public Object next(){
+		return enumA.nextElement();
+	}
+	
+	public void remove(){
+		throw new UnsupportedOperationException();
+	}
+
+}
+iii) EnumProduct.java
+
+package assignment7;
+
+import java.util.Enumeration;
+import java.util.Vector;
+
+public class EnumProduct {
+private Vector product;
+	
+	public EnumProduct(){
+		//System.out.println("Implementing Adapter pattern for Enumerator to iterator");
+		product = new Vector();
+		setProduct("ProductA: Laptop");
+		setProduct("ProductB: Mobile");
+		setProduct("ProductC: Tablets");
+		setProduct("ProductD: Router");
+	}
+
+	public void setProduct(String s){
+		product.add(s);
+	}
+
+	public Enumeration getProduct(){
+		 Enumeration eProduct = product.elements();
+		 return eProduct;
+	}
+
+}
+
+
+
+Q2.
+
+
+# Import necessary libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error,r2_score
+
+dataset=pd.read_csv("HousePrice.csv")
+dataset.dropna(inplace=True)
+dataset=dataset.drop("ADDRESS",axis=1)
+
+
+
+l1=LabelEncoder()
+dataset["POSTED_BY"]=l1.fit_transform(dataset["POSTED_BY"])
+dataset["BHK_OR_RK"]=l1.fit_transform(dataset["BHK_OR_RK"])
+
+
+X=dataset.iloc[:,:-1].values
+y=dataset.iloc[:,1].values
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LinearRegression()
+
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print("Mean Squared Error:", mse)
+print("R-squared (R2) Score:", r2)
+
+print("Coefficients:", model.coef_)
+print("Intercept:", model.intercept_)
+
+
+Q3.
+
+
+var fs = require('fs');
+console.log("\nFile Contents of file before append:");
+var a = fs.readFileSync("file1.txt", "utf8");
+fs.appendFile("file2.txt", a, function(err){
+    if (err)
+        console.log(err);
+    else {
+        console.log("\nFile Contents of file after append:",
+        fs.readFileSync("file2.txt", "utf8"));
+    }
+});

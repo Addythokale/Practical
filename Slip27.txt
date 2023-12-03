@@ -1,0 +1,87 @@
+Q2.
+
+
+# Importing the libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Importing the dataset
+datas = pd.read_csv('SimpleLinearRegression.csv')
+datas
+
+X = datas.iloc[:, :-1].values
+y = datas.iloc[:, 1].values
+
+# Fitting Linear Regression to the dataset
+from sklearn.linear_model import LinearRegression
+lin = LinearRegression()
+
+lin.fit(X, y)
+
+
+# Fitting Polynomial Regression to the dataset
+from sklearn.preprocessing import PolynomialFeatures
+
+poly = PolynomialFeatures(degree=4)
+X_poly = poly.fit_transform(X)
+
+poly.fit(X_poly, y)
+lin2 = LinearRegression()
+lin2.fit(X_poly, y)
+
+# Visualising the Polynomial Regression results
+plt.scatter(X, y, color='blue')
+
+plt.plot(X, lin2.predict(poly.fit_transform(X)),color='red')
+plt.title('Polynomial Regression')
+plt.xlabel('Temperature')
+plt.ylabel('Pressure')
+
+plt.show()
+
+
+
+
+Q3.
+
+
+
+Views.py -
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from django.shortcuts import render
+from django.http import HttpResponse
+# Create your views here.
+def index(req):
+   return render(req,"m.html")
+
+urls.py -
+"""myproj URL Configuration
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/1.11/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.conf.urls import url, include
+    2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
+"""
+from django.conf.urls import url
+from django.contrib import admin
+
+from myapp1.views import index
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url("/",index),
+]
+m.html -
+<html>
+<body>
+<b> Hello I am Learning Django</b>
+</body>
+</html>

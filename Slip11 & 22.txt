@@ -1,0 +1,149 @@
+Q1.
+
+
+i)AdapterPatternExample.java
+package assignment10;
+public class AdapterPatternExample {
+    public static void main(String[] args) {
+        HeartModel heartModel = new HeartModelImpl();
+        BeatModel adaptedModel = new HeartModelAdapter(heartModel);
+
+        int heartRate = heartModel.getHeartRate();
+        int bpm = adaptedModel.getBPM();
+
+        System.out.println("Heart Rate: " + heartRate);
+        System.out.println("BPM (Adapted): " + bpm);
+
+ii) BeatModel.java
+package assignment10;
+public interface BeatModel {
+    void on();
+    void off();
+    void setBPM(int bpm);
+    int getBPM();
+    void registerObserver(BeatObserver observer);
+    void removeObserver(BeatObserver observer);
+    void registerObserver(BPMObserver observer);
+    void removeObserver(BPMObserver observer);
+}
+iii) BeatObserver.java
+
+package assignment10;
+public class BeatObserver {
+}
+
+iv) BPMObserver.java
+package assignment10;
+public class BPMObserver {
+}
+
+v) HeartModel.java
+package assignment10;
+
+public interface HeartModel {
+    int getHeartRate();
+}
+
+
+
+vi) HeartModelAdapter.java
+package assignment10;
+public class HeartModelAdapter implements BeatModel {
+    private HeartModel heartModel;
+public HeartModelAdapter(HeartModel heartModel) {
+        this.heartModel = heartModel;
+    }
+    @Override
+    public void on() {
+    }
+    @Override
+    public void off() {
+    }
+    @Override
+    public void setBPM(int bpm) {
+    }
+   @Override
+    public int getBPM() {
+        return heartModel.getHeartRate(); // Adapt Heart Rate to BPM
+    }
+   @Override
+    public void registerObserver(BeatObserver observer) {
+    }
+   @Override
+    public void removeObserver(BeatObserver observer) {
+    }
+    @Override
+    public void registerObserver(BPMObserver observer) {
+    }
+ @Override
+    public void removeObserver(BPMObserver observer) {}
+}
+vii) HeartModelImpl.java
+
+package assignment10;
+
+public class HeartModelImpl implements HeartModel {
+    private int heartRate;
+
+    public HeartModelImpl() {
+        // Simulate a heart rate
+        this.heartRate = 90;
+    }
+
+    @Override
+    public int getHeartRate() {
+        return heartRate;
+    }
+}
+
+
+
+Q2.
+
+
+import pandas as pd
+import numpy as np
+
+dataset = pd.read_csv("data.csv")
+dataset
+dataset.info()
+dataset.isnull().sum()
+dataset.dropna(inplace=True)
+dataset
+
+
+
+Q3.
+
+
+var mysql = require('mysql');
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "sam"
+});
+
+con.connect(function(err) {
+  if (err) throw err;
+  else{
+    console.log("Connected!");
+    con.query("select * from customer1", function (err, result) {
+      if (err) throw err;
+      else{
+        console.log(result);
+        con.query("delete from customer1 where name = 'riya'", function (err, result){
+          if (err) throw err;
+          else{
+            console.log("Deleted Record : " + result.affectedRows);
+            con.query("select * from students1", function (err, result) {
+              if (err) throw err;
+              else
+                console.log(result);
+            });
+        }
+        });
+      }
+    });
+      }
+  });

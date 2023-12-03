@@ -1,0 +1,215 @@
+Q1.
+
+
+i) LowerCaseInputStream.java
+
+package Assignment2;
+
+import java.io.*;
+public class LowerCaseInputStream extends FilterInputStream
+{
+public LowerCaseInputStream(InputStream in)
+{
+super(in);
+}
+public int read() throws IOException
+{
+int c = super.read();
+return (c == -1 ?c : Character.toLowerCase((char)c));
+}
+public int read(byte[] b, int offset, int len) throws IOException {
+int result = super.read(b, offset, len);
+for (int i = offset; i<offset+result; i++) {
+b[i] = (byte)Character.toLowerCase((char)b[i]);
+}
+return result;
+}
+}
+
+ii) InputTest.java
+package Assignment2;
+
+import java.io.*;
+public class InputTest {
+public static void main(String[] args) throws IOException {
+int c;
+try {
+InputStream in =new LowerCaseInputStream(new BufferedInputStream(new FileInputStream("D:/demo/a.txt")));
+while((c = in.read()) >= 0) {
+System.out.print((char)c);
+}
+in.close();
+} catch (IOException e) {
+e.printStackTrace();
+}
+}
+}
+
+
+
+
+Q2.
+
+
+import numpy as np
+import pandas as pd
+df = pd.read_csv('weather.csv')
+
+df_getdummy = pd.get_dummies(data=df, columns= ['Temperature', 'Outlook', 'Windy', 'Humidity'])
+# Separating training set and test set
+
+from sklearn.model_selection import train_test_split
+x= df_getdummy.drop('Played?', axis=1)
+y= df_getdummy['Played?']
+X_train, X_test, y_train,y_test = train_test_split(x,y,test_size=0.30, random_state=101)
+
+#visualising the decision tree diagram
+from sklearn.tree import DecisionTreeClassifier
+dtree = DecisionTreeClassifier(max_depth=3)
+dtree.fit(X_train,y_train)
+predictions = dtree.predict(X_test)
+print(predictions)from sklearn.tree 
+
+import plot_treeimport matplotlib.pyplot as plt
+fig = plt.figure(figsize=(6,6))
+plot_tree(dtree,feature_names=df_getdummy.columns,fontsize=6,filled=True, class_names=['Not Play','Play'])
+plt.show()
+
+
+
+Q3.
+
+poll_app/models.py
+
+from django.db import models
+
+class ProgrammingLanguage(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+class Vote(models.Model):
+    language = models.ForeignKey(ProgrammingLanguage, on_delete=models.CASCADE)
+    ip_address = models.GenericIPAddressField()
+
+    def __str__(self):
+        return f"Vote for {self.language.name}"
+
+
+poll_app/admin.py
+
+from django.contrib import admin
+from .models import ProgrammingLanguage, Vote
+
+admin.site.register(ProgrammingLanguage)
+admin.site.register(Vote)
+
+
+
+poll_app/forms.py
+
+from django import forms
+from .models import Vote
+
+class VoteForm(forms.ModelForm):
+    class Meta:
+        model = Vote
+        fields = ['language']
+
+
+
+poll_app/views.py
+
+from django.shortcuts import render, redirect
+from .models import ProgrammingLanguage, Vote
+from .forms import VoteForm
+
+def public_poll(request):
+    languages = ProgrammingLanguage.objects.all()
+    form = VoteForm(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        ip_address = request.META.get('REMOTE_ADDR')
+        form.instance.ip_address = ip_address
+        form.save()
+        return redirect('public_poll')
+
+    context = {'languages': languages, 'form': form}
+    return render(request, 'poll_app/public_poll.html', context)
+
+def admin_poll(request):
+    languages = ProgrammingLanguage.objects.all()
+    context = {'languages': languages}
+    return render(request, 'poll_app/admin_poll.html', context)
+
+
+
+
+poll_app/templates/poll_app/public_poll.html
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Public Poll</title>
+</head>
+<body>
+    <h2>Vote for your favorite programming language:</h2>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Vote">
+    </form>
+    <h3>Results:</h3>
+    <ul>
+        {% for language in languages %}
+            <li>{{ language.name }}: {{ language.vote_set.count }} votes</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+
+poll_app/templates/poll_app/admin_poll.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Poll</title>
+</head>
+<body>
+    <h2>Programming Languages</h2>
+    <ul>
+        {% for language in languages %}
+            <li>{{ language.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+
+poll_app/urls.py
+
+from django.urls import path
+from .views import public_poll, admin_poll
+
+urlpatterns = [
+    path('public-poll/', public_poll, name='public_poll'),
+    path('admin-poll/', admin_poll, name='admin_poll'),
+]
+
+
+
+
+poll_project/urls.py
+
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('poll/', include('poll_app.urls')),
+]
+
+

@@ -1,0 +1,103 @@
+Q1.
+
+
+// Car interface
+interface Car {
+    void assemble();
+}
+
+// Concrete implementation of Car
+class BasicCar implements Car {
+    @Override
+    public void assemble() {
+        System.out.println("Basic Car");
+    }
+}
+
+// Decorator abstract class
+abstract class CarDecorator implements Car {
+    protected Car car;
+
+    public CarDecorator(Car car) {
+        this.car = car;
+    }
+
+    @Override
+    public void assemble() {
+        car.assemble();
+    }
+}
+
+// Concrete decorator for SportsCar
+class SportsCar extends CarDecorator {
+    public SportsCar(Car car) {
+        super(car);
+    }
+
+    @Override
+    public void assemble() {
+        super.assemble();
+        System.out.println("Adding features for Sports Car");
+    }
+}
+
+// Concrete decorator for LuxuryCar
+class LuxuryCar extends CarDecorator {
+    public LuxuryCar(Car car) {
+        super(car);
+    }
+
+    @Override
+    public void assemble() {
+        super.assemble();
+        System.out.println("Adding features for Luxury Car");
+    }
+}
+
+// Client code
+public class DecoratorPatternExample {
+    public static void main(String[] args) {
+        // Creating a basic car
+        Car basicCar = new BasicCar();
+        basicCar.assemble();
+
+        System.out.println();
+
+        // Decorating a basic car with SportsCar features
+        Car sportsCar = new SportsCar(new BasicCar());
+        sportsCar.assemble();
+
+        System.out.println();
+
+        // Decorating a basic car with LuxuryCar features
+        Car luxuryCar = new LuxuryCar(new BasicCar());
+        luxuryCar.assemble();
+    }
+}
+
+
+Q2.
+
+
+import pandas as pd
+import numpy as np
+
+dataset = pd.read_csv("iris.csv")
+dataset
+
+dataset.info()
+from sklearn.preprocessing import LabelEncoder
+l1 = LabelEncoder()
+dataset['New_Category']=l1.fit_transform(dataset['Species'])
+dataset
+
+
+
+Q3.
+
+
+var http = require('http');
+var server = http.createServer(function (req, res) {
+    res.write("<h1>Server Created!</h1>");
+});
+server.listen(8080);

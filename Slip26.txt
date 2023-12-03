@@ -1,0 +1,235 @@
+Q1.
+
+
+StratergyMain.java
+package slip10;
+public class StratergyMain  {
+	public static void main(String[] args){
+		System.out.println("Lets check ducks fly behaviour and Quack behavior.");
+		
+		Duck mallard=new MallardDuck();
+		mallard.performFly();
+		mallard.performQuack();
+		mallard.display();
+		
+		Duck redheadduck=new RedHeadDuck();
+		redheadduck.performFly();
+		redheadduck.performQuack();
+		redheadduck.display();	
+	}
+}
+
+Duck.java
+package slip10;
+public abstract class Duck {
+
+   FlyBehaviour flyBehaviour;
+   QuackBehavior quackBehavior;
+    public Duck() {	
+    }
+    public abstract  void  display();
+   
+    void performFly() {
+       flyBehaviour.fly();
+    }
+    void performQuack() {
+        quackBehavior.quack();
+     }
+    
+    public void quack() {
+    	System.out.println("Quack!"); 
+    }
+    
+    public void swim() {
+    	System.out.println("All ducks can swim"); 
+    }
+}
+
+
+RedHeadDuck.java
+ 
+package slip10;
+
+	class RedHeadDuck extends Duck {
+		public RedHeadDuck() {
+			flyBehaviour=new FlyNoWay();
+			quackBehavior=new Squeak();
+		}
+
+    @Override
+    public void display() {
+        System.out.println("I am a RedHead Duck!");
+    }
+}
+
+MallardDuck.java
+package slip10;
+
+class MallardDuck extends Duck {
+	public MallardDuck() {
+		flyBehaviour=new FlyWithWings();
+		quackBehavior=new Quack();
+	}
+
+    @Override
+    public void display() {
+        System.out.println("Looks like a Mallard Duck!");
+    }
+}
+
+
+
+
+
+Interface FlyBehaviour
+
+package slip10;
+
+public interface FlyBehaviour {
+    public void fly();
+ }
+
+FlyWithWings.java
+package slip10;
+
+class FlyWithWings implements FlyBehaviour {
+
+    public void fly() {
+        System.out.println("fly with two wings");
+    }
+}
+
+FlyNoWay.java
+package slip10;
+
+class FlyNoWay implements FlyBehaviour {
+
+    @Override
+    public void fly() {
+        System.out.println("can not fly");
+    }
+}
+
+
+Interface QuackBehavior
+package slip10;
+
+public interface QuackBehavior {
+	public void quack();
+}
+
+Squeak.java
+package slip10;
+
+public class Squeak implements QuackBehavior{
+	@Override
+	public void quack() {
+		System.out.println("Squeak");
+	}
+}
+
+Quack.java
+package slip10;
+
+public class Quack implements QuackBehavior{
+
+	@Override
+	public void quack() {
+		System.out.println("Quack");	
+	}
+}
+
+MuteQuack.java
+package slip10;
+
+public class MuteQuack implements QuackBehavior{
+
+	public void quack() {
+		System.out.println("Silence");
+	}
+}
+
+
+
+Q2.
+
+
+# Import necessary libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error,r2_score
+
+dataset=pd.read_csv("HousePrice.csv")
+dataset.dropna(inplace=True)
+dataset=dataset.drop("ADDRESS",axis=1)
+
+
+
+l1=LabelEncoder()
+dataset["POSTED_BY"]=l1.fit_transform(dataset["POSTED_BY"])
+dataset["BHK_OR_RK"]=l1.fit_transform(dataset["BHK_OR_RK"])
+
+
+X=dataset.iloc[:,:-1].values
+y=dataset.iloc[:,1].values
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LinearRegression()
+
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print("Mean Squared Error:", mse)
+print("R-squared (R2) Score:", r2)
+
+print("Coefficients:", model.coef_)
+print("Intercept:", model.intercept_)
+
+
+
+Q3.
+
+
+var mysql = require('mysql');  
+var con = mysql.createConnection({  
+  host: "localhost",  
+  user: "root",  
+  password: "",
+  database: "sam"
+});  
+
+con.connect(function(err) {  
+  if (err) throw err;  
+  else
+    console.log("Connected!");  
+  con.query("create database sam13", function (err, result) {  
+    if (err) 
+    console.log(err);  
+    console.log("Database Created");  
+  });
+});
+
+con.query("use sam13",function(err){
+  if(err)
+    console.log(err);
+  else
+    console.log("Database { "+"sam13 } selected!");
+});
+
+var sql = "create table customer1(name varchar(10), address varchar(10))";
+con.query(sql, function (err, result) {
+  if (err)
+    console.log(err);
+  else
+    console.log("Table Created");
+});

@@ -1,0 +1,205 @@
+Q1.
+
+
+StratergyMain.java
+package slip10;
+public class StratergyMain  {
+	public static void main(String[] args){
+		System.out.println("Lets check ducks fly behaviour and Quack behavior.");
+		
+		Duck mallard=new MallardDuck();
+		mallard.performFly();
+		mallard.performQuack();
+		mallard.display();
+		
+		Duck redheadduck=new RedHeadDuck();
+		redheadduck.performFly();
+		redheadduck.performQuack();
+		redheadduck.display();	
+	}
+}
+
+Duck.java
+package slip10;
+public abstract class Duck {
+
+   FlyBehaviour flyBehaviour;
+   QuackBehavior quackBehavior;
+    public Duck() {	
+    }
+    public abstract  void  display();
+   
+    void performFly() {
+       flyBehaviour.fly();
+    }
+    void performQuack() {
+        quackBehavior.quack();
+     }
+    
+    public void quack() {
+    	System.out.println("Quack!"); 
+    }
+    
+    public void swim() {
+    	System.out.println("All ducks can swim"); 
+    }
+}
+
+
+RedHeadDuck.java
+ 
+package slip10;
+
+	class RedHeadDuck extends Duck {
+		public RedHeadDuck() {
+			flyBehaviour=new FlyNoWay();
+			quackBehavior=new Squeak();
+		}
+
+    @Override
+    public void display() {
+        System.out.println("I am a RedHead Duck!");
+    }
+}
+
+MallardDuck.java
+package slip10;
+
+class MallardDuck extends Duck {
+	public MallardDuck() {
+		flyBehaviour=new FlyWithWings();
+		quackBehavior=new Quack();
+	}
+
+    @Override
+    public void display() {
+        System.out.println("Looks like a Mallard Duck!");
+    }
+}
+
+
+
+
+
+Interface FlyBehaviour
+
+package slip10;
+
+public interface FlyBehaviour {
+    public void fly();
+ }
+
+FlyWithWings.java
+package slip10;
+
+class FlyWithWings implements FlyBehaviour {
+
+    public void fly() {
+        System.out.println("fly with two wings");
+    }
+}
+
+FlyNoWay.java
+package slip10;
+
+class FlyNoWay implements FlyBehaviour {
+
+    @Override
+    public void fly() {
+        System.out.println("can not fly");
+    }
+}
+
+
+Interface QuackBehavior
+package slip10;
+
+public interface QuackBehavior {
+	public void quack();
+}
+
+Squeak.java
+package slip10;
+
+public class Squeak implements QuackBehavior{
+	@Override
+	public void quack() {
+		System.out.println("Squeak");
+	}
+}
+
+Quack.java
+package slip10;
+
+public class Quack implements QuackBehavior{
+
+	@Override
+	public void quack() {
+		System.out.println("Quack");	
+	}
+}
+
+MuteQuack.java
+package slip10;
+
+public class MuteQuack implements QuackBehavior{
+
+	public void quack() {
+		System.out.println("Silence");
+	}
+}
+
+
+
+Q2.
+
+
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+
+# Load the Iris dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+target_names = iris.target_names
+
+# Create a scatter plot
+plt.figure(figsize=(8, 6))
+
+colors = ['navy', 'turquoise', 'darkorange']
+lw = 2
+
+for color, i, target_name in zip(colors, [0, 1, 2], target_names):
+    plt.scatter(X[y == i, 0], X[y == i, 1], color=color, alpha=.8, lw=lw,
+                label=target_name)
+plt.legend(loc='best', shadow=False, scatterpoints=1)
+plt.title('Scatter plot of Iris dataset')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+
+plt.show()
+
+
+
+Q3.
+
+
+var mysql = require('mysql');
+var con = mysql.createConnection({
+  host: 'localhost',
+  user: "root",
+  password: "",
+  database:'sam'
+});
+
+con.connect(function(err) {
+  if (err) throw err;
+  else
+    console.log("Connected!");
+});
+
+con.query('select * from customer1', function(err,rows){
+  if(err) throw err;
+  else
+    console.log(rows);
+});

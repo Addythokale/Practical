@@ -1,0 +1,246 @@
+Q1.
+
+
+i) PizzaTest.java
+package Assignment;
+
+public class PizzaTest {
+
+public static void main(String[] args) {
+//first order
+PizzaStorenyStore = new NYPizzaStore();
+Pizza pizza = nyStore.orderPizza("Cheese");
+System.out.println("Bharat ordered a "+pizza.getName()+"\nbn");
+
+System.out.println("**********------------*************----------*********"+"\n");
+
+//Second order
+PizzaStorechicagoStore = new ChicagoPizzaStore();
+pizza = chicagoStore.orderPizza("Cheese");
+System.out.println("Pratiksha ordered a "+pizza.getName()+"\n");
+}
+
+}
+
+
+
+
+ii) PizzaStore.java
+
+package Assignment;
+
+public abstract class PizzaStore {
+	
+	public Pizza orderPizza(String type)
+	{
+		Pizza pizza;
+		pizza = createPizza(type);
+		pizza.prepare();
+		pizza.bake();
+		pizza.cut();
+		pizza.box();
+		return pizza;
+	}
+	protected abstract Pizza createPizza(String type);
+
+}
+
+
+
+iii)Pizza.java
+
+package Assignment;
+
+import java.util.*;
+public class Pizza {
+	
+	String name;
+	String dough;
+	String sauce;
+	ArrayList toppings = new ArrayList();
+	
+	void prepare()
+	{
+		System.out.println("Preparing" +name);
+		System.out.println("Tossing dough...");
+		System.out.println("Adding Souce...");
+		System.out.println("Adding toppings...");
+		
+		for(int i=0;i<toppings.size();i++)
+		{
+			System.out.println(""+toppings.get(i));
+		}
+	}
+	
+	void bake()
+	{
+		System.out.println("Bake for 25 mins...");
+	}
+	
+	void cut()
+	{
+		System.out.println("Cutting into diagonal slices ...");
+	}
+	
+	void box()
+	{
+		System.out.println("Place into Pizzastore box");
+	}
+	public String getName()
+	{
+		return name;
+	}
+
+}
+
+
+iv) ChicagoPizzaStore.java
+
+package Assignment;
+
+public class ChicagoPizzaStore extends PizzaStore{
+	
+	public Pizza createPizza(String item)
+	{
+		if(item.equals("Cheese"))
+		{
+			return new ChicagoStyleCheesePizza();
+		}
+		else return null;
+	}
+
+}
+
+
+
+v) ChicagoStyleCheesePizza.java
+
+package Assignment;
+
+public class ChicagoStyleCheesePizza extends Pizza{
+	
+	public ChicagoStyleCheesePizza() 
+	{
+		name = "Chicago style Deep Dish Cheese Pizza";
+		dough = "Extra Thick Crust Dough";
+		sauce = "Plum Tomato Sauce";
+		
+		toppings.add("Shreddded Mazzarella Cheese..");
+	}
+	
+	void cut()
+	{
+		System.out.println("***Cutting the pizza into square slices***");
+	}
+
+}
+
+
+vi) NYPizzaStore.java
+
+package Assignment;
+
+public class NYPizzaStore extends PizzaStore{
+	
+	public Pizza createPizza(String item)
+	{
+		if(item.equals("Cheese"))
+		{
+			return new NYStyleCheesePizza();
+		}
+		else return null;
+	}
+
+}
+
+
+vii) NYStyleCheesePizza.java
+
+package Assignment;
+
+public class NYStyleCheesePizza extends Pizza{
+	
+	public NYStyleCheesePizza() 
+	{
+		name = "Chicago style Deep Dish Cheese Pizza";
+		dough = "Extra Thick Crust Dough";
+		sauce = "Plum Tomato Sauce";
+		
+		toppings.add("Shreddded Mazzarella Cheese..");
+	}
+	
+	void cut()
+	{
+		System.out.println("***Cutting the pizza into square slices***");
+	}
+
+}
+
+
+
+
+
+Q2.
+
+
+import pandas as pd
+import numpy as np 
+
+dataset=pd.read_csv("diabetes.csv")
+dataset
+
+x=dataset.iloc[:,:-1].values
+y=dataset.iloc[:,-1].values
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=11)
+
+from sklearn.preprocessing import StandardScaler
+sc=StandardScaler()
+x_train=sc.fit_transform(x_train)
+x_test=sc.transform(x_test) 
+
+from sklearn.naive_bayes import GaussianNB
+nb=GaussianNB()
+nb.fit(x_train,y_train)
+
+y_pred=nb.predict(x_test)
+print(np.concatenate((y_pred.reshape(len(y_pred),1),y_test.reshape(len(y_test),1)),1))
+
+from sklearn.metrics import confusion_matrix, accuracy_score
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+ac=accuracy_score(y_test, y_pred)*100
+print(ac)
+
+
+
+
+Q3.
+
+
+
+views.py -
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def f1(req):
+	return render(req,"a.html")
+def f2(req):
+	return render(req,"b.html")
+def f3(req):
+	return render(req,"c.html")
+
+urls.py -
+from django.contrib import admin
+from django.urls import path
+from views.views import f1
+from views.views import f2
+from views.views import f3
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+	path('first/',f1),
+	path('second/',f2),
+	path('third/',f3),
+]
